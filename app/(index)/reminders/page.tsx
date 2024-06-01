@@ -92,6 +92,10 @@ export default async function Type({
       value: "title",
     },
     {
+      head: "Description",
+      value: "description",
+    },
+    {
       head: "Time",
       value: "time",
     },
