@@ -10,7 +10,14 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#F00480",
+        secondary: "#2E57A6",
+        light: "#C0C7D0",
+        dark: "#181B1F",
+      },
+    },
   },
   plugins: [nextui()],
 };
