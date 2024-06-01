@@ -1,4 +1,5 @@
 "use client";
+import useSubmitForm from "@/hooks/formHooks";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,32 +7,35 @@ import { useState } from "react";
 export default function SignupPage() {
   const [altcheck, setAltCheck] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const { submitForm, error } = useSubmitForm(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`
+  );
   return (
     <section className="flex justify-center bg-[#11111b]">
       <div className="w-[50%] h-screen relative mobile:hidden">
         <div className="w-full h-full top-0 absolute bg-black/20" />
-        <img src="https://www.openphone.com/blog/wp-content/uploads/2023/08/appointment-reminder-text-4-1024x536.webp" className="w-full h-full object-fill" alt="" />
+        <img
+          src="https://www.openphone.com/blog/wp-content/uploads/2023/08/appointment-reminder-text-4-1024x536.webp"
+          className="w-full h-full object-fill"
+          alt=""
+        />
       </div>
       <div className="w-[50%] mobile:w-full  h-screen bg-[url('/login-bg.png')] bg-cover bg-no-repeat">
         <div className="bg-black/50 w-full flex justify-center items-center h-full">
           <div className=" py-6">
             <div className="flex flex-col items-center gap-5 mobile:items-center">
-              <span
-                className="font-bold text-3xl text-yellow-300 leading-[3.75rem] mobile:text-3xl"
-              >
+              <span className="font-bold text-3xl text-yellow-300 leading-[3.75rem] mobile:text-3xl">
                 Customer SignUp
               </span>
               <div className="flex flex-col items-center gap-y-5 introheading-2 text-base">
                 <Formik
                   initialValues={{
-                    Name: "",
-                    PhoneNo: "",
-                    AlternativeNo: "",
-                    Email: "",
-                    Password: "",
+                    name: "",
+                    number: "",
+                    password: "",
                   }}
                   onSubmit={async (values, { resetForm }) => {
-                   console.log(values)
+                    await submitForm(values);
                     resetForm();
                   }}
                 >
@@ -46,19 +50,22 @@ export default function SignupPage() {
                     <form onSubmit={handleSubmit}>
                       <div className=" flex justify-between">
                         <div className="w-full">
-                          <label htmlFor="firstname" className="py-2 flex font-bold">First Name:</label>
+                          <label
+                            htmlFor="firstname"
+                            className="py-2 flex font-bold"
+                          >
+                            Name:
+                          </label>
                           <input
                             type="text"
-                            name="FirstName"
+                            name="name"
                             className="py-1.5 text-black w-full outline-none px-2 rounded-md font-bold"
                             onChange={handleChange}
-                            value={values.Name}
+                            value={values.name}
                             placeholder="John Doe"
                           />
-                          {errors.Name && touched.Name ? (
-                            <span className="errorspan">
-                              {errors.Name}
-                            </span>
+                          {errors.name && touched.name ? (
+                            <span className="errorspan">{errors.name}</span>
                           ) : (
                             ""
                           )}
@@ -66,32 +73,42 @@ export default function SignupPage() {
                       </div>
                       <div className="flex justify-between">
                         <div className="w-full">
-                          <label htmlFor="phonenumber" className="py-2 flex font-bold">Phone No:</label>
+                          <label
+                            htmlFor="number"
+                            className="py-2 flex font-bold"
+                          >
+                            Phone No:
+                          </label>
                           <input
                             type="text"
-                            name="PhoneNo"
+                            name="number"
                             className="py-1.5 text-black outline-none w-full px-2 rounded-md font-bold"
                             onChange={handleChange}
-                            value={values.PhoneNo}
+                            value={values.number}
                             placeholder="684298314"
                           />
-                          {errors.PhoneNo && touched.PhoneNo ? (
-                            <span className="errorspan">{errors.PhoneNo}</span>
+                          {errors.number && touched.number ? (
+                            <span className="errorspan">{errors.number}</span>
                           ) : (
                             ""
                           )}
-                        </div>  
+                        </div>
                       </div>
                       <div className="w-full flex-col justify-between mobile:flex-col">
                         <div className="mobile:w-full">
-                          <label htmlFor="password" className="py-2 flex font-bold">Password:</label>
+                          <label
+                            htmlFor="password"
+                            className="py-2 flex font-bold"
+                          >
+                            Password:
+                          </label>
                           <div className="flex items-center bg-white">
                             <input
                               type={showPassword ? "text" : "password"}
-                              name="Password"
+                              name="password"
                               className="py-1.5 text-black outline-none px-2 font-bold"
                               onChange={handleChange}
-                              value={values.Password}
+                              value={values.password}
                               placeholder="Evans12@me"
                             />
 
@@ -122,14 +139,19 @@ export default function SignupPage() {
                               </svg>
                             )}
                           </div>
-                          {errors.Password && touched.Password ? (
-                            <span className="errorspan">{errors.Password}</span>
+                          {errors.password && touched.password ? (
+                            <span className="errorspan">{errors.password}</span>
                           ) : (
                             ""
                           )}
                         </div>
                         <div className="mobile:w-full">
-                          <label htmlFor="lname" className="py-2 flex font-bold">Confirm Password:</label>
+                          <label
+                            htmlFor="lname"
+                            className="py-2 flex font-bold"
+                          >
+                            Confirm Password:
+                          </label>
                           <div className="flex items-center bg-white">
                             <input
                               type={showPassword ? "text" : "password"}
@@ -176,12 +198,11 @@ export default function SignupPage() {
                     </form>
                   )}
                 </Formik>
-                
               </div>
               <div className="descr-1">
                 <span>
                   Have an account ? {""}
-                  <Link href="/login">
+                  <Link href="/signin">
                     <span className="text-primary font-medium cursor-pointer">
                       Sign In!
                     </span>

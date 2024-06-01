@@ -9,9 +9,13 @@ import { useRouter } from "next/navigation";
 import getAction from "@/actions/get";
 import TypeProps from "@/types/type";
 import { BsFillCheckCircleFill } from "react-icons/bs";
+import { useStateContext } from "@/app/context";
+import postAction from "@/actions/post";
 
 const Form: FC = () => {
   const router = useRouter();
+  const { number, setNumber } = useStateContext();
+
   const [open, setOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
 
@@ -57,6 +61,10 @@ const Form: FC = () => {
       if (typeof res.error !== "string") toast.error("A server error occured!");
     } else {
       toast.success(`Reminder added sucessfully`);
+      await postAction("bulk", {
+        numbers: number,
+        message: `${title}\n${description}`,
+      });
       setOpen(false);
     }
   };
